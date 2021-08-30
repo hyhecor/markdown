@@ -91,7 +91,7 @@ func CvtCsvToMarkdowntable(csvData []byte) (buff []byte, err error) {
 		return
 	}
 
-	rowFold := func(row []string, delim string) string {
+	rowMap := func(row []string, delim string) string {
 		var out string
 		for _, s := range row {
 			out += delim + strings.ReplaceAll(strings.ReplaceAll(s, text_newline, html_newline), text_space, html_space)
@@ -99,16 +99,16 @@ func CvtCsvToMarkdowntable(csvData []byte) (buff []byte, err error) {
 		return out
 	}
 
-	seperaterFold := func(row []string, delim string) string {
+	seperaterMap := func(row []string, delim string) string {
 		return strings.Repeat(delim, len(row))
 	}
 
 	buff = make([]byte, 0, 1<<10)
 	for i, rows := range records {
 
-		s := fmt.Sprintln(rowFold(rows, markdown_column_seperater))
+		s := fmt.Sprintln(rowMap(rows, markdown_column_seperater))
 		if i == 0 {
-			s += fmt.Sprintln(seperaterFold(rows, markdown_head_seperater))
+			s += fmt.Sprintln(seperaterMap(rows, markdown_head_seperater))
 		}
 		buff = append(buff, []byte(s)...)
 	}
